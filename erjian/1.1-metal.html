@@ -2,37 +2,45 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>二建机电 · 1.1 金属材料 知识卡</title>
 <style>
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{margin:0;padding:16px;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  body{margin:0;padding:14px 14px 96px;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
        background:#f5f6f8;color:#1a1a1a;max-width:640px;margin:0 auto}
-  h1{font-size:20px;margin:4px 0 2px}
-  .sub{font-size:13px;color:#666;margin:0 0 12px}
-  .bar{display:flex;gap:8px;font-size:13px;color:#444;margin-bottom:12px}
-  .bar span{background:#fff;border:1px solid #e3e6ea;border-radius:8px;padding:6px 10px;flex:1;text-align:center}
-  .bar b{font-size:16px;display:block;margin-top:2px}
-  .card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);min-height:240px;display:flex;flex-direction:column}
-  .tag{font-size:12px;color:#0b6bcb;background:#e8f2ff;border-radius:6px;padding:3px 8px;align-self:flex-start;margin-bottom:12px}
-  .q{font-size:19px;line-height:1.6;font-weight:600}
-  .a{margin-top:16px;padding-top:16px;border-top:1px dashed #dde1e6;font-size:17px;line-height:1.75;color:#0f4c81;white-space:pre-wrap}
-  .src{margin-top:auto;padding-top:12px;font-size:12px;color:#8a8f98}
-  .acts{display:flex;gap:10px;margin-top:14px}
-  button{flex:1;min-height:48px;font-size:16px;border-radius:10px;border:1px solid #d8dde3;background:#fff;color:#222;font-weight:600}
-  button:active{transform:scale(.98)}
-  #flip{background:#0b6bcb;color:#fff;border-color:#0b6bcb;flex:2}
+  h1{font-size:18px;margin:2px 0 2px}
+  .sub{font-size:12px;color:#666;margin:0 0 10px}
+  .bar{display:flex;gap:6px;font-size:12px;color:#444;margin-bottom:10px}
+  .bar span{background:#fff;border:1px solid #e3e6ea;border-radius:8px;padding:5px 6px;flex:1;text-align:center}
+  .bar b{font-size:15px;display:block;margin-top:1px}
+  .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.06);
+        min-height:200px;display:flex;flex-direction:column;cursor:pointer}
+  .card:active{background:#fafbfc}
+  .tag{font-size:12px;color:#0b6bcb;background:#e8f2ff;border-radius:6px;padding:3px 8px;align-self:flex-start;margin-bottom:10px}
+  .q{font-size:18px;line-height:1.6;font-weight:600}
+  .a{margin-top:14px;padding-top:14px;border-top:1px dashed #dde1e6;font-size:16px;line-height:1.7;color:#0f4c81;white-space:pre-wrap}
+  .hint{margin-top:12px;font-size:12px;color:#9aa0a8}
+  .src{margin-top:auto;padding-top:10px;font-size:12px;color:#8a8f98}
+  .dock{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e3e6ea;
+        padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;
+        max-width:640px;margin:0 auto;z-index:9}
+  .dock button{flex:1;min-height:50px;font-size:16px;border-radius:10px;border:1px solid #d8dde3;
+               background:#fff;color:#222;font-weight:600}
+  .dock button:active{transform:scale(.98)}
+  #flip{background:#0b6bcb;color:#fff;border-color:#0b6bcb;flex:1.3}
   #bad{color:#c0392b;border-color:#f0c4bd}
   #good{color:#1e7b4f;border-color:#bfe3ce}
-  .modes{display:flex;gap:8px;margin-top:12px;font-size:13px}
-  .modes button{min-height:36px;font-size:13px;font-weight:400;color:#555}
-  .modes button.on{background:#e8f2ff;border-color:#0b6bcb;color:#0b6bcb;font-weight:600}
-  footer{margin-top:18px;font-size:12px;color:#8a8f98;line-height:1.7}
+  .tools{display:flex;gap:8px;margin-top:10px;font-size:13px;flex-wrap:wrap}
+  .tools button{min-height:34px;font-size:13px;font-weight:400;color:#555;background:#fff;
+                border:1px solid #d8dde3;border-radius:8px;padding:0 12px}
+  .tools button.on{background:#e8f2ff;border-color:#0b6bcb;color:#0b6bcb;font-weight:600}
+  .tools .nav{margin-left:auto}
+  footer{margin-top:14px;font-size:12px;color:#8a8f98;line-height:1.6}
 </style>
 </head>
 <body>
 <h1>1.1 金属材料</h1>
-<p class="sub">2027 版教材 P1–4（1.1.1）· 共 <span id="total">0</span> 张</p>
+<p class="sub">2027 版教材 P1–4 · 共 <span id="total">0</span> 张</p>
 
 <div class="bar">
   <span>新卡<b id="nNew">0</b></span>
@@ -40,29 +48,31 @@
   <span>没记住<b id="nBad">0</b></span>
 </div>
 
-<div class="card">
+<div class="card" id="card">
   <div class="tag" id="tag">—</div>
   <div class="q" id="q">加载中…</div>
   <div class="a" id="a" hidden></div>
+  <div class="hint" id="hint">点卡片任意位置翻面</div>
   <div class="src" id="src"></div>
 </div>
 
-<div class="acts">
-  <button id="bad">没记住</button>
-  <button id="flip">翻面看答案</button>
-  <button id="good">记住了</button>
-</div>
-
-<div class="modes">
-  <button data-mode="all" class="on">全部顺序</button>
+<div class="tools">
+  <button data-mode="all" class="on">全部</button>
   <button data-mode="shuffle">随机</button>
   <button data-mode="review">只练没记住</button>
+  <button class="nav" id="prev">← 上一张</button>
 </div>
 
 <footer>
   内容出处：2027 版《机电工程管理与实务》P1–4。<br>
-  规则：先自己答，再翻面。答不出立刻点「没记住」，明天 7:30 会再发给你。
+  规则：先自己答，再翻面。答不出点「没记住」。
 </footer>
+
+<div class="dock">
+  <button id="bad">没记住</button>
+  <button id="flip">翻面</button>
+  <button id="good">记住了</button>
+</div>
 
 <script>
 const CARDS = [
@@ -73,14 +83,12 @@ const CARDS = [
   {id:5, g:"分类", q:"有色金属通常分为哪几类？", a:"轻金属、重金属、贵金属、半金属、稀有金属、稀土金属。", s:"P1"},
   {id:6, g:"分类", q:"与纯金属相比，有色合金的性能有什么特点？", a:"强度和硬度一般更高；\n电阻大、电阻温度系数小。", s:"P1"},
   {id:7, g:"分类", q:"特种金属材料包括哪些？", a:"非晶态、准晶、微晶、纳米晶金属材料；\n隐身、抗氢、超导、形状记忆、耐磨、减振阻尼等功能合金；\n金属基复合材料。", s:"P1"},
-
   {id:8, g:"性能", q:"金属材料的性能分为哪两类？", a:"工艺性能和使用性能。", s:"P1"},
   {id:9, g:"性能", q:"工艺性能包括哪些？", a:"铸造性能、可焊性、可锻性、热处理性能、切削加工性能。", s:"P1"},
   {id:10, g:"性能", q:"使用性能包括哪三类？", a:"机械性能、物理性能、化学性能。", s:"P1"},
   {id:11, g:"性能", q:"机械性能（力学性能）的常用指标有哪些？", a:"强度、塑性、硬度、冲击韧性、多次冲击抗力、疲劳极限。", s:"P1"},
   {id:12, g:"性能", q:"物理性能主要包括什么？", a:"密度、熔点、热膨胀性、磁性、电学性能。", s:"P1"},
   {id:13, g:"性能", q:"化学性能主要看哪两项？", a:"耐腐蚀性、抗氧化性（又称氧化抗力）。", s:"P1"},
-
   {id:14, g:"钢", q:"钢按化学成分分为哪三类？", a:"非合金钢、低合金钢、合金钢。", s:"P2"},
   {id:15, g:"钢", q:"非合金钢按含碳量怎么分类？", a:"低碳钢 Wc < 0.25%；\n中碳钢 0.25% ≤ Wc ≤ 0.60%；\n高碳钢 Wc > 0.60%。", s:"P2"},
   {id:16, g:"钢", q:"碳素结构钢和碳素工具钢的用途区别？", a:"结构钢：机械零件和工程结构件，一般属低、中碳钢；\n工具钢：刀具、量具、模具，一般属高碳钢。", s:"P2"},
@@ -95,7 +103,6 @@ const CARDS = [
   {id:25, g:"钢", q:"不锈钢按热处理后的显微组织分为哪五类？", a:"铁素体不锈钢、马氏体不锈钢、奥氏体不锈钢、奥氏体-铁素体不锈钢、沉淀硬化不锈钢。", s:"P3"},
   {id:26, g:"钢", q:"锅炉钢的含碳量范围？高压锅炉用什么钢？", a:"含碳量 Wc 在 0.16%～0.26%；\n高压锅炉采用珠光体耐热钢或奥氏体耐热钢。", s:"P3"},
   {id:27, g:"钢", q:"耐热钢分为哪两类？", a:"抗氧化钢（高温不起皮，化学稳定性好但承载较低）；\n热强钢（高温强度高，并有相应抗氧化性）。", s:"P4"},
-
   {id:28, g:"有色", q:"纯铜的密度、熔点、外观和主要性能？", a:"玫瑰红色，表面氧化呈紫红色（故称紫铜）；\n密度 8.89 g/cm³，熔点 1083℃；\n导电性、导热性好，可进行各种冷、热加工。", s:"P4"},
   {id:29, g:"有色", q:"黄铜是什么合金？主要用途？", a:"铜和锌组成的合金，耐磨性能较强。\n无缝管：换热器、冷凝器、低温管路、海底管道；\n板材、条材、棒材、管材及铸造零件；\n铸件常做阀门和管道配件。", s:"P4"},
   {id:30, g:"有色", q:"白铜以什么为主要添加元素？分哪两类？", a:"以镍为主要添加元素。\n结构白铜：机械性能和耐蚀性好，色泽美观；\n电工白铜：热电性能好（锰铜、康铜、考铜）。", s:"P4"},
@@ -104,9 +111,10 @@ const CARDS = [
 ];
 
 const KEY = "erjian_mec_1_1_status";
-let status = JSON.parse(localStorage.getItem(KEY) || "{}");
+let status = {};
+try { status = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { status = {}; }
 let mode = "all";
-let queue = [];
+let queue = CARDS.map(c => c.id);
 let pos = 0;
 
 const el = id => document.getElementById(id);
@@ -114,61 +122,87 @@ const el = id => document.getElementById(id);
 function buildQueue() {
   let ids = CARDS.map(c => c.id);
   if (mode === "review") ids = ids.filter(id => status[id] === 0);
-  if (mode === "shuffle") ids.sort(() => Math.random() - 0.5);
+  if (mode === "shuffle") ids = ids.sort(() => Math.random() - 0.5);
   queue = ids;
   pos = 0;
 }
 
 function render() {
-  el("total").textContent = CARDS.length;
   const good = CARDS.filter(c => status[c.id] === 1).length;
   const bad = CARDS.filter(c => status[c.id] === 0).length;
+  el("total").textContent = CARDS.length;
   el("nNew").textContent = CARDS.length - good - bad;
   el("nGood").textContent = good;
   el("nBad").textContent = bad;
 
   if (!queue.length) {
-    el("tag").textContent = "完成";
-    el("q").textContent = mode === "review" ? "没有待复习的卡了，换「全部顺序」再来一遍。" : "这一轮走完了，换「只练没记住」巩固。";
+    el("tag").textContent = "没有卡";
+    el("q").textContent = "这一组是空的 —— 换「全部」或「随机」。";
     el("a").hidden = true;
+    el("hint").textContent = "";
     el("src").textContent = "";
     return;
   }
+  if (pos < 0) pos = queue.length - 1;
   if (pos >= queue.length) pos = 0;
+
   const c = CARDS.find(x => x.id === queue[pos]);
   el("tag").textContent = c.g;
   el("q").textContent = c.q;
   el("a").textContent = c.a;
   el("a").hidden = true;
+  el("hint").textContent = "点卡片任意位置翻面";
   el("src").textContent = "出处：" + c.s + "　（第 " + (pos + 1) + " / " + queue.length + " 张）";
-  el("flip").textContent = "翻面看答案";
+  el("flip").textContent = "翻面";
+  window.scrollTo(0, 0);
 }
 
-el("flip").onclick = () => {
+function toggle() {
   const a = el("a");
+  if (!queue.length) return;
   a.hidden = !a.hidden;
-  el("flip").textContent = a.hidden ? "翻面看答案" : "收起答案";
-};
+  el("flip").textContent = a.hidden ? "翻面" : "收起";
+  el("hint").textContent = a.hidden ? "点卡片任意位置翻面" : "";
+}
+
+function next(step) {
+  if (!queue.length) return;
+  pos = (pos + step + queue.length) % queue.length;
+  render();
+}
 
 function mark(v) {
   if (!queue.length) return;
   status[queue[pos]] = v;
-  localStorage.setItem(KEY, JSON.stringify(status));
+  try { localStorage.setItem(KEY, JSON.stringify(status)); } catch (e) {}
   pos = (pos + 1) % queue.length;
   render();
 }
 
+el("card").addEventListener("click", toggle);
+el("flip").onclick = e => { e.stopPropagation(); toggle(); };
 el("good").onclick = () => mark(1);
 el("bad").onclick = () => mark(0);
+el("prev").onclick = () => next(-1);
 
-document.querySelectorAll(".modes button").forEach(b => {
+document.querySelectorAll(".tools button[data-mode]").forEach(b => {
   b.onclick = () => {
-    document.querySelectorAll(".modes button").forEach(x => x.classList.remove("on"));
+    document.querySelectorAll(".tools button[data-mode]").forEach(x => x.classList.remove("on"));
     b.classList.add("on");
     mode = b.dataset.mode;
     buildQueue();
     render();
   };
+});
+
+// 左右滑动切题
+let x0 = null;
+el("card").addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+el("card").addEventListener("touchend", e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 60) next(dx < 0 ? 1 : -1);
+  x0 = null;
 });
 
 buildQueue();
