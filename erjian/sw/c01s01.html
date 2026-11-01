@@ -50,6 +50,9 @@
        line-height:1.5;border:1px solid #d8dde3;border-radius:10px;background:#fff;color:#222}
   .opt.ok{background:#e6f5ec;border-color:#1e7b4f;color:#14532d;font-weight:600}
   .opt.no{background:#fdecea;border-color:#c0392b;color:#7f1d1d}
+  #exInput{width:100%;margin-top:12px;padding:12px;font-size:15px;line-height:1.6;
+           border:1px solid #d8dde3;border-radius:10px;font-family:inherit;background:#fff;resize:vertical}
+  #exInput:focus{outline:none;border-color:#0b6bcb}
   .why{margin-top:10px;font-size:14px;line-height:1.7;color:#444;background:#f7f8fa;border-radius:8px;padding:10px 12px;white-space:pre-wrap}
   .exDock{display:flex;gap:8px;margin-top:14px}
   .exDock button{flex:1;min-height:46px;font-size:15px;border-radius:10px;border:1px solid #d8dde3;background:#fff;font-weight:600}
@@ -153,7 +156,8 @@ const CARDS = [
 const EXAM = [
   { type:"正向", cardIds:[17],
     q:"非合金钢按质量等级分为哪几类？普通质量和特殊质量的硫、磷限量各是多少？",
-    answer:"三类：\n普通质量 Ws ≤ 0.045%、Wp ≤ 0.045%；\n优质：硫磷比普通质量少，需特别控制质量；\n特殊质量 Ws ≤ 0.02%、Wp ≤ 0.025%。" },
+    answer:"三类：\n普通质量 Ws ≤ 0.045%、Wp ≤ 0.045%；\n优质：硫磷比普通质量少，需特别控制质量；\n特殊质量 Ws ≤ 0.02%、Wp ≤ 0.025%。",
+    keys:["普通","特殊","优质","0.045","0.02","0.025"], need:5 },
   { type:"选择", cardIds:[18,19],
     q:"某批钢材标记为 Q235AF，下列说法正确的是：",
     options:["屈服强度 235MPa，A 级质量，沸腾钢","抗拉强度 235MPa，F 级质量，镇静钢","屈服强度 235MPa，F 级质量，沸腾钢","抗拉强度 235MPa，A 级质量，镇静钢"],
@@ -166,13 +170,16 @@ const EXAM = [
     why:"教材：不锈钢是（狭义）不锈钢和耐酸钢的「总称」，不能等同。\n能抵抗大气腐蚀的叫不锈钢，抵抗化学介质腐蚀的叫耐酸钢——两者范围不同。" },
   { type:"反向", cardIds:[2,3,32],
     q:"说出下面三个数字各自代表什么：\n2.11%　／　0.0218%　／　660.24℃",
-    answer:"2.11% —— 钢与铸铁的含碳量分界线；\n0.0218% —— 黑色金属中纯铁的含碳量上限；\n660.24℃ —— 铝的熔点。" },
+    answer:"2.11% —— 钢与铸铁的含碳量分界线；\n0.0218% —— 黑色金属中纯铁的含碳量上限；\n660.24℃ —— 铝的熔点。",
+    keys:["2.11","铸铁","0.0218","纯铁","660.24","铝"], need:5 },
   { type:"反向", cardIds:[25,29,30,31],
     q:"把口诀展开：\n「铁马奥双沉」是哪五类？\n「黄锌白镍青是锡」分别指哪三种铜合金的主要添加元素？",
-    answer:"五类：铁素体、马氏体、奥氏体、奥氏体-铁素体、沉淀硬化不锈钢。\n黄铜—锌；白铜—镍；青铜—锡。" },
+    answer:"五类：铁素体、马氏体、奥氏体、奥氏体-铁素体、沉淀硬化不锈钢。\n黄铜—锌；白铜—镍；青铜—锡。",
+    keys:["铁素体","马氏体","奥氏体","沉淀硬化","锌","镍","锡"], need:6 },
   { type:"场景", cardIds:[20,23],
     q:"工地上两批钢材：一批 Q235D，要做重要焊接结构；另一批 45 钢，想拿来替代。\n监理问你行不行，依据是什么？",
-    answer:"Q235D 可以 —— 教材：质量较好的 Q235C、D 级可作重要焊接结构用材。\n45 钢不宜替代 —— 教材中 45 钢是优质碳素结构钢，调质后用于受力较大的机械零件（齿轮、连杆、轴）；它属中碳钢（Wc 0.45%），焊接性远不如低碳钢。\n（后半句按常识推断，非教材原文。）" }
+    answer:"Q235D 可以 —— 教材：质量较好的 Q235C、D 级可作重要焊接结构用材。\n45 钢不宜替代 —— 教材中 45 钢是优质碳素结构钢，调质后用于受力较大的机械零件（齿轮、连杆、轴）；它属中碳钢（Wc 0.45%），焊接性远不如低碳钢。\n（后半句按常识推断，非教材原文。）",
+    keys:["Q235D","可以","45","不宜","焊接"], need:3 }
 ];
 
 const KEY_STATUS = "erjian_mec_1_1_status";
@@ -310,25 +317,48 @@ function renderExam() {
     skip.onclick = () => answerChoice(-1);
     dock.appendChild(skip);
   } else {
-    const showBtn = document.createElement("button");
-    showBtn.className = "primary";
-    showBtn.textContent = "看参考答案";
-    showBtn.onclick = () => {
-      el("exWhy").textContent = q.answer;
-      el("exWhy").hidden = false;
-      showBtn.style.display = "none";
-      const ok = document.createElement("button");
-      ok.className = "primary";
-      ok.textContent = "答对了";
-      ok.onclick = () => finishQuestion(true);
-      const no = document.createElement("button");
-      no.textContent = "没答对";
-      no.onclick = () => finishQuestion(false);
-      dock.appendChild(no);
-      dock.appendChild(ok);
-    };
-    dock.appendChild(showBtn);
+    const ta = document.createElement("textarea");
+    ta.id = "exInput";
+    ta.rows = 4;
+    ta.placeholder = "用你自己的话写下来，写完点「提交」——空着提交也算没答。";
+    el("exOpts").appendChild(ta);
+    const sub = document.createElement("button");
+    sub.className = "primary";
+    sub.textContent = "提交答案";
+    sub.onclick = () => gradeOpen(q, ta.value);
+    dock.appendChild(sub);
   }
+}
+
+function norm(s) {
+  return (s || "").toLowerCase().replace(/\s+/g, "").replace(/％/g, "%");
+}
+
+function gradeOpen(q, input) {
+  if (ex.answered) return;
+  ex.answered = true;
+  const t = norm(input);
+  const keys = q.keys || [];
+  const hits = keys.filter(k => t.includes(norm(k)));
+  const miss = keys.filter(k => !t.includes(norm(k)));
+  const need = q.need || keys.length;
+  const pass = hits.length >= need;
+
+  let txt = "命中 " + hits.length + " / " + keys.length + " 个关键词（需要 " + need + " 个）\n";
+  if (hits.length) txt += "✅ 命中：" + hits.join("、") + "\n";
+  if (miss.length) txt += "❌ 漏掉：" + miss.join("、") + "\n";
+  txt += "\n—— 参考答案 ——\n" + q.answer;
+
+  el("exWhy").textContent = txt;
+  el("exWhy").hidden = false;
+
+  const dock = el("exDock");
+  dock.innerHTML = "";
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "primary";
+  nextBtn.textContent = ex.i === EXAM.length - 1 ? "看结果" : "下一题";
+  nextBtn.onclick = () => finishQuestion(pass);
+  dock.appendChild(nextBtn);
 }
 
 function answerChoice(idx) {
