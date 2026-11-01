@@ -8,8 +8,13 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{margin:0;padding:14px 14px 96px;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
        background:#f5f6f8;color:#1a1a1a;max-width:640px;margin:0 auto}
-  h1{font-size:18px;margin:2px 0 2px}
+  .top{display:flex;align-items:center;gap:8px;margin:2px 0 4px}
+  h1{font-size:18px;margin:0;flex:1}
+  #gateBtn{min-height:36px;padding:0 14px;font-size:14px;font-weight:600;border-radius:9px;
+           border:1px solid #0b6bcb;background:#0b6bcb;color:#fff}
+  #gateBtn.passed{background:#1e7b4f;border-color:#1e7b4f}
   .sub{font-size:12px;color:#666;margin:0 0 10px}
+  .badge{display:inline-block;font-size:12px;color:#1e7b4f;background:#e6f5ec;border-radius:6px;padding:2px 8px;margin-left:6px}
   .bar{display:flex;gap:6px;font-size:12px;color:#444;margin-bottom:10px}
   .bar span{background:#fff;border:1px solid #e3e6ea;border-radius:8px;padding:5px 6px;flex:1;text-align:center}
   .bar b{font-size:15px;display:block;margin-top:1px}
@@ -17,7 +22,7 @@
         min-height:200px;display:flex;flex-direction:column;cursor:pointer}
   .card:active{background:#fafbfc}
   .tag{font-size:12px;color:#0b6bcb;background:#e8f2ff;border-radius:6px;padding:3px 8px;align-self:flex-start;margin-bottom:10px}
-  .q{font-size:18px;line-height:1.6;font-weight:600}
+  .q{font-size:18px;line-height:1.6;font-weight:600;white-space:pre-wrap}
   .a{margin-top:14px;padding-top:14px;border-top:1px dashed #dde1e6;font-size:16px;line-height:1.7;color:#0f4c81;white-space:pre-wrap}
   .kk{margin-top:12px;padding:9px 11px;background:#fff8e6;border-left:3px solid #f0b429;border-radius:6px;
       font-size:15px;line-height:1.6;color:#7a5b00}
@@ -28,7 +33,6 @@
         max-width:640px;margin:0 auto;z-index:9}
   .dock button{flex:1;min-height:50px;font-size:16px;border-radius:10px;border:1px solid #d8dde3;
                background:#fff;color:#222;font-weight:600}
-  .dock button:active{transform:scale(.98)}
   #flip{background:#0b6bcb;color:#fff;border-color:#0b6bcb;flex:1.3}
   #bad{color:#c0392b;border-color:#f0c4bd}
   #good{color:#1e7b4f;border-color:#bfe3ce}
@@ -38,40 +42,73 @@
   .tools button.on{background:#e8f2ff;border-color:#0b6bcb;color:#0b6bcb;font-weight:600}
   .tools .nav{margin-left:auto}
   footer{margin-top:14px;font-size:12px;color:#8a8f98;line-height:1.6}
+  #exam{display:none}
+  #exam.on{display:block}
+  #study.off{display:none}
+  .exTop{display:flex;justify-content:space-between;font-size:13px;color:#666;margin-bottom:8px}
+  .opt{display:block;width:100%;text-align:left;margin-top:8px;padding:12px 14px;font-size:15px;
+       line-height:1.5;border:1px solid #d8dde3;border-radius:10px;background:#fff;color:#222}
+  .opt.ok{background:#e6f5ec;border-color:#1e7b4f;color:#14532d;font-weight:600}
+  .opt.no{background:#fdecea;border-color:#c0392b;color:#7f1d1d}
+  .why{margin-top:10px;font-size:14px;line-height:1.7;color:#444;background:#f7f8fa;border-radius:8px;padding:10px 12px;white-space:pre-wrap}
+  .exDock{display:flex;gap:8px;margin-top:14px}
+  .exDock button{flex:1;min-height:46px;font-size:15px;border-radius:10px;border:1px solid #d8dde3;background:#fff;font-weight:600}
+  .exDock button.primary{background:#0b6bcb;color:#fff;border-color:#0b6bcb}
+  .res{font-size:15px;line-height:1.9;white-space:pre-wrap}
+  .res b{font-size:26px;color:#0b6bcb}
+  .chip{display:inline-block;margin:4px 6px 0 0;padding:3px 9px;font-size:13px;border-radius:6px;
+        background:#e8f2ff;color:#0b6bcb;border:1px solid #cfe3fb}
 </style>
 </head>
 <body>
-<h1>1.1 金属材料</h1>
-<p class="sub">2027 版教材 P1–4 · 共 <span id="total">0</span> 张 · 含口诀</p>
 
-<div class="bar">
-  <span>新卡<b id="nNew">0</b></span>
-  <span>记住了<b id="nGood">0</b></span>
-  <span>没记住<b id="nBad">0</b></span>
+<div class="top">
+  <h1>1.1 金属材料</h1>
+  <button id="gateBtn">验收</button>
+</div>
+<p class="sub">2027 版教材 P1–4 · 共 <span id="total">0</span> 张 <span id="passBadge"></span></p>
+
+<div id="study">
+  <div class="bar">
+    <span>新卡<b id="nNew">0</b></span>
+    <span>记住了<b id="nGood">0</b></span>
+    <span>没记住<b id="nBad">0</b></span>
+  </div>
+
+  <div class="card" id="card">
+    <div class="tag" id="tag">—</div>
+    <div class="q" id="q">加载中…</div>
+    <div class="a" id="a" hidden></div>
+    <div class="kk" id="kk" hidden></div>
+    <div class="hint" id="hint">点卡片任意位置翻面</div>
+    <div class="src" id="src"></div>
+  </div>
+
+  <div class="tools">
+    <button data-mode="all" class="on">全部</button>
+    <button data-mode="shuffle">随机</button>
+    <button data-mode="review">只练没记住</button>
+    <button class="nav" id="prev">← 上一张</button>
+  </div>
+
+  <footer>
+    内容出处：2027 版《机电工程管理与实务》P1–4。<br>
+    口诀只是提取的钥匙，理解还得靠答案本身。
+  </footer>
 </div>
 
-<div class="card" id="card">
-  <div class="tag" id="tag">—</div>
-  <div class="q" id="q">加载中…</div>
-  <div class="a" id="a" hidden></div>
-  <div class="kk" id="kk" hidden></div>
-  <div class="hint" id="hint">点卡片任意位置翻面</div>
-  <div class="src" id="src"></div>
+<div id="exam">
+  <div class="exTop"><span id="exPos">第 1 / 6 题</span><span id="exScore">已对 0</span></div>
+  <div class="card" style="cursor:default">
+    <div class="tag" id="exTag">—</div>
+    <div class="q" id="exQ"></div>
+    <div id="exOpts"></div>
+    <div class="why" id="exWhy" hidden></div>
+  </div>
+  <div class="exDock" id="exDock"></div>
 </div>
 
-<div class="tools">
-  <button data-mode="all" class="on">全部</button>
-  <button data-mode="shuffle">随机</button>
-  <button data-mode="review">只练没记住</button>
-  <button class="nav" id="prev">← 上一张</button>
-</div>
-
-<footer>
-  内容出处：2027 版《机电工程管理与实务》P1–4。<br>
-  口诀只是提取的钥匙，理解还得靠答案本身。
-</footer>
-
-<div class="dock">
+<div class="dock" id="dock">
   <button id="bad">没记住</button>
   <button id="flip">翻面</button>
   <button id="good">记住了</button>
@@ -113,9 +150,39 @@ const CARDS = [
   {id:32, g:"有色", q:"铝的密度、熔点和性能特点？", a:"银白色轻金属，密度 2.698 g/cm³，熔点 660.24℃；\n化学性能活泼，塑性好、强度低，适合冷加工成型（轧制、挤压、模锻、冷冲、弯曲）。", k:"二点七，六六零，轻而软", s:"P4"}
 ];
 
-const KEY = "erjian_mec_1_1_status";
+const EXAM = [
+  { type:"正向", cardIds:[17],
+    q:"非合金钢按质量等级分为哪几类？普通质量和特殊质量的硫、磷限量各是多少？",
+    answer:"三类：\n普通质量 Ws ≤ 0.045%、Wp ≤ 0.045%；\n优质：硫磷比普通质量少，需特别控制质量；\n特殊质量 Ws ≤ 0.02%、Wp ≤ 0.025%。" },
+  { type:"选择", cardIds:[18,19],
+    q:"某批钢材标记为 Q235AF，下列说法正确的是：",
+    options:["屈服强度 235MPa，A 级质量，沸腾钢","抗拉强度 235MPa，F 级质量，镇静钢","屈服强度 235MPa，F 级质量，沸腾钢","抗拉强度 235MPa，A 级质量，镇静钢"],
+    correct:0,
+    why:"Q = 屈服强度，235 = 数值（MPa），A = 质量等级，F = 沸腾钢。\nB、D 把「屈服」换成了「抗拉」；C 把质量等级 A 与脱氧符号 F 对调。" },
+  { type:"选择", cardIds:[24,25],
+    q:"下列关于不锈钢的说法，错误的是：",
+    options:["含铬量 Wcr > 12%，才具有不锈钢的特点","按热处理后的显微组织可分为五类，其中包括沉淀硬化不锈钢","不锈钢就是耐酸钢，两者是同一个概念","奥氏体不锈钢是五类之一"],
+    correct:2,
+    why:"教材：不锈钢是（狭义）不锈钢和耐酸钢的「总称」，不能等同。\n能抵抗大气腐蚀的叫不锈钢，抵抗化学介质腐蚀的叫耐酸钢——两者范围不同。" },
+  { type:"反向", cardIds:[2,3,32],
+    q:"说出下面三个数字各自代表什么：\n2.11%　／　0.0218%　／　660.24℃",
+    answer:"2.11% —— 钢与铸铁的含碳量分界线；\n0.0218% —— 黑色金属中纯铁的含碳量上限；\n660.24℃ —— 铝的熔点。" },
+  { type:"反向", cardIds:[25,29,30,31],
+    q:"把口诀展开：\n「铁马奥双沉」是哪五类？\n「黄锌白镍青是锡」分别指哪三种铜合金的主要添加元素？",
+    answer:"五类：铁素体、马氏体、奥氏体、奥氏体-铁素体、沉淀硬化不锈钢。\n黄铜—锌；白铜—镍；青铜—锡。" },
+  { type:"场景", cardIds:[20,23],
+    q:"工地上两批钢材：一批 Q235D，要做重要焊接结构；另一批 45 钢，想拿来替代。\n监理问你行不行，依据是什么？",
+    answer:"Q235D 可以 —— 教材：质量较好的 Q235C、D 级可作重要焊接结构用材。\n45 钢不宜替代 —— 教材中 45 钢是优质碳素结构钢，调质后用于受力较大的机械零件（齿轮、连杆、轴）；它属中碳钢（Wc 0.45%），焊接性远不如低碳钢。\n（后半句按常识推断，非教材原文。）" }
+];
+
+const KEY_STATUS = "erjian_mec_1_1_status";
+const KEY_PASS = "erjian_mec_1_1_pass";
+
 let status = {};
-try { status = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { status = {}; }
+try { status = JSON.parse(localStorage.getItem(KEY_STATUS) || "{}"); } catch (e) { status = {}; }
+let passInfo = null;
+try { passInfo = JSON.parse(localStorage.getItem(KEY_PASS) || "null"); } catch (e) { passInfo = null; }
+
 let mode = "all";
 let queue = CARDS.map(c => c.id);
 let pos = 0;
@@ -130,6 +197,18 @@ function buildQueue() {
   pos = 0;
 }
 
+function renderBadge() {
+  if (passInfo && passInfo.pass) {
+    el("passBadge").innerHTML = '<span class="badge">已通关 ' + passInfo.date + '</span>';
+    el("gateBtn").classList.add("passed");
+    if (!el("exam").classList.contains("on")) el("gateBtn").textContent = "已通关";
+  } else {
+    el("passBadge").textContent = "";
+    el("gateBtn").classList.remove("passed");
+    if (!el("exam").classList.contains("on")) el("gateBtn").textContent = "验收";
+  }
+}
+
 function render() {
   const good = CARDS.filter(c => status[c.id] === 1).length;
   const bad = CARDS.filter(c => status[c.id] === 0).length;
@@ -141,10 +220,8 @@ function render() {
   if (!queue.length) {
     el("tag").textContent = "没有卡";
     el("q").textContent = "这一组是空的 —— 换「全部」或「随机」。";
-    el("a").hidden = true;
-    el("kk").hidden = true;
-    el("hint").textContent = "";
-    el("src").textContent = "";
+    el("a").hidden = true; el("kk").hidden = true;
+    el("hint").textContent = ""; el("src").textContent = "";
     return;
   }
   if (pos < 0) pos = queue.length - 1;
@@ -181,9 +258,148 @@ function next(step) {
 function mark(v) {
   if (!queue.length) return;
   status[queue[pos]] = v;
-  try { localStorage.setItem(KEY, JSON.stringify(status)); } catch (e) {}
+  try { localStorage.setItem(KEY_STATUS, JSON.stringify(status)); } catch (e) {}
   pos = (pos + 1) % queue.length;
   render();
+}
+
+let ex = { i:0, score:0, answered:false, wrongCards:[] };
+
+function startExam() {
+  ex = { i:0, score:0, answered:false, wrongCards:[] };
+  el("study").classList.add("off");
+  el("exam").classList.add("on");
+  el("dock").style.display = "none";
+  el("gateBtn").textContent = "退出验收";
+  renderExam();
+  window.scrollTo(0, 0);
+}
+
+function exitExam() {
+  el("study").classList.remove("off");
+  el("exam").classList.remove("on");
+  el("dock").style.display = "flex";
+  renderBadge();
+  render();
+}
+
+function renderExam() {
+  const q = EXAM[ex.i];
+  el("exPos").textContent = "第 " + (ex.i + 1) + " / " + EXAM.length + " 题";
+  el("exScore").textContent = "已对 " + ex.score;
+  el("exTag").textContent = q.type;
+  el("exQ").textContent = q.q;
+  el("exOpts").innerHTML = "";
+  el("exWhy").hidden = true;
+  el("exWhy").textContent = "";
+  ex.answered = false;
+
+  const dock = el("exDock");
+  dock.innerHTML = "";
+
+  if (q.options) {
+    q.options.forEach((opt, idx) => {
+      const b = document.createElement("button");
+      b.className = "opt";
+      b.textContent = String.fromCharCode(65 + idx) + ". " + opt;
+      b.onclick = () => answerChoice(idx);
+      el("exOpts").appendChild(b);
+    });
+    const skip = document.createElement("button");
+    skip.textContent = "不会";
+    skip.onclick = () => answerChoice(-1);
+    dock.appendChild(skip);
+  } else {
+    const showBtn = document.createElement("button");
+    showBtn.className = "primary";
+    showBtn.textContent = "看参考答案";
+    showBtn.onclick = () => {
+      el("exWhy").textContent = q.answer;
+      el("exWhy").hidden = false;
+      showBtn.style.display = "none";
+      const ok = document.createElement("button");
+      ok.className = "primary";
+      ok.textContent = "答对了";
+      ok.onclick = () => finishQuestion(true);
+      const no = document.createElement("button");
+      no.textContent = "没答对";
+      no.onclick = () => finishQuestion(false);
+      dock.appendChild(no);
+      dock.appendChild(ok);
+    };
+    dock.appendChild(showBtn);
+  }
+}
+
+function answerChoice(idx) {
+  if (ex.answered) return;
+  ex.answered = true;
+  const q = EXAM[ex.i];
+  const opts = el("exOpts").querySelectorAll(".opt");
+  opts.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.correct) b.classList.add("ok");
+    if (i === idx && idx !== q.correct) b.classList.add("no");
+  });
+  el("exWhy").textContent = q.why || q.answer || "";
+  el("exWhy").hidden = false;
+
+  const dock = el("exDock");
+  dock.innerHTML = "";
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "primary";
+  nextBtn.textContent = ex.i === EXAM.length - 1 ? "看结果" : "下一题";
+  nextBtn.onclick = () => finishQuestion(idx === q.correct);
+  dock.appendChild(nextBtn);
+}
+
+function finishQuestion(right) {
+  if (right) ex.score++;
+  else ex.wrongCards = ex.wrongCards.concat(EXAM[ex.i].cardIds || []);
+  ex.i++;
+  if (ex.i >= EXAM.length) showResult();
+  else renderExam();
+}
+
+function showResult() {
+  const total = EXAM.length;
+  const pass = ex.score === total;
+  el("exPos").textContent = "验收结束";
+  el("exScore").textContent = "";
+  el("exTag").textContent = pass ? "通关" : "未通过";
+  el("exQ").textContent = "";
+  el("exOpts").innerHTML = "";
+
+  const uniq = [...new Set(ex.wrongCards)].sort((a, b) => a - b);
+  let txt = "答对 " + ex.score + " / " + total + " 题\n";
+  if (pass) {
+    const d = new Date();
+    const ds = (d.getMonth() + 1) + "-" + String(d.getDate()).padStart(2, "0");
+    passInfo = { pass:true, date:ds, score:ex.score };
+    try { localStorage.setItem(KEY_PASS, JSON.stringify(passInfo)); } catch (e) {}
+    txt += "\n✅ 本节通关。7 天后再验一次。\n\n";
+    txt += "额外一道人工关：拿张白纸，3 分钟写出这节结构，拍照发给教练——程序判不了这一步。";
+  } else {
+    txt += "\n❌ 没过。错题对应的卡：卡 " + uniq.join("、卡 ") + "\n\n";
+    txt += "回卡片区按编号核对，重点看这几张。";
+  }
+
+  const why = el("exWhy");
+  why.textContent = txt;
+  why.hidden = false;
+
+  const dock = el("exDock");
+  dock.innerHTML = "";
+  const again = document.createElement("button");
+  again.textContent = pass ? "再验一次" : "重来";
+  again.onclick = () => startExam();
+  const back = document.createElement("button");
+  back.className = "primary";
+  back.textContent = "回卡片";
+  back.onclick = () => exitExam();
+  dock.appendChild(again);
+  dock.appendChild(back);
+  renderBadge();
 }
 
 el("card").addEventListener("click", toggle);
@@ -191,6 +407,9 @@ el("flip").onclick = e => { e.stopPropagation(); toggle(); };
 el("good").onclick = () => mark(1);
 el("bad").onclick = () => mark(0);
 el("prev").onclick = () => next(-1);
+el("gateBtn").onclick = () => {
+  if (el("exam").classList.contains("on")) exitExam(); else startExam();
+};
 
 document.querySelectorAll(".tools button[data-mode]").forEach(b => {
   b.onclick = () => {
@@ -213,6 +432,7 @@ el("card").addEventListener("touchend", e => {
 
 buildQueue();
 render();
+renderBadge();
 </script>
 </body>
 </html>
