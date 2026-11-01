@@ -3,37 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>二建机电 · 知识卡</title>
+<title>二建 · 知识卡</title>
 <style>
   *{box-sizing:border-box}
   body{margin:0;padding:18px;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
        background:#f5f6f8;color:#1a1a1a;max-width:640px;margin:0 auto}
   h1{font-size:20px;margin:0 0 4px}
   .sub{font-size:13px;color:#666;margin:0 0 18px}
-  a.card{display:block;background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;
+  a.sub-card{display:block;background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:12px;
          text-decoration:none;color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-  a.card:active{transform:scale(.99)}
-  .t{font-size:17px;font-weight:600;margin-bottom:4px}
+  a.sub-card:active{transform:scale(.99)}
+  a.sub-card.off{opacity:.55}
+  .t{font-size:17px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:8px}
   .m{font-size:13px;color:#888}
-  .badge{display:inline-block;font-size:12px;color:#0b6bcb;background:#e8f2ff;
-         border-radius:6px;padding:2px 8px;margin-left:6px}
-  .empty{background:#fff;border-radius:12px;padding:20px;color:#888;font-size:14px;text-align:center}
+  .pill{font-size:11px;padding:2px 7px;border-radius:10px;background:#e8f2ff;color:#0b6bcb;font-weight:500}
+  .pill.done{background:#e6f5ec;color:#1e7b4f}
+  .pill.todo{background:#f0f1f3;color:#888}
   footer{margin-top:20px;font-size:12px;color:#8a8f98;line-height:1.7}
 </style>
 </head>
 <body>
-<h1>二建机电 · 知识卡</h1>
+<h1>二建 · 知识卡</h1>
 <p class="sub">2027 版教材 · 按节出卡 · 手机直接刷</p>
 
-<a class="card" href="1.1-metal.html">
-  <div class="t">1.1 金属材料 <span class="badge">32 张</span></div>
-  <div class="m">教材 P1–4 · 分类 / 性能 / 钢 / 有色</div>
+<a class="sub-card" href="sw/">
+  <div class="t">机电工程管理与实务 <span class="pill">16 章</span></div>
+  <div class="m">已开：1.1 金属材料（32 张 + 验收）</div>
 </a>
 
-<div class="empty" id="empty">1.2 常用设备（下一节）— 学完就加</div>
+<a class="sub-card off" href="#">
+  <div class="t">建设工程施工管理 <span class="pill todo">8 章</span></div>
+  <div class="m">未开始 · 计划 W1 起并行</div>
+</a>
+
+<a class="sub-card off" href="#">
+  <div class="t">建设工程法规及相关知识 <span class="pill todo">10 章</span></div>
+  <div class="m">未开始 · 计划 W14 起并行</div>
+</a>
 
 <footer>
-  用法：先看问题自己答，再翻面核对。答错的点「没记住」，下次优先出现。<br>
+  用法：先看问题自己答，再翻面核对。<br>
+  每节右上角有「验收」，6 题全对才算通关。<br>
   进度存在本机浏览器，换设备不同步。
 </footer>
 </body>
